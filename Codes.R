@@ -1,7 +1,6 @@
 
 
 ###################
-# Ricardy ----- ENSAYO INEGI 
 
 ## PAQUETES USADOS 
 library(dplyr)
@@ -22,21 +21,18 @@ base <- t1 %>%
   select(UPM, SEXO, EDAD, NOM_ENT, NOM_MUN, AP4_11_10, 
          FAC_ELE, AP4_4_A, AP4_1, AP4_3_1, ESTRATO, FAC_HOG)
 
-## VARIABLES ELEGIDAS 
-
-
+###  VARIABLES ELEGIDAS 
 # Variabele cuantitativa : EDAD 
 # Variable cualitativa dicotómica : SEXO (SEXO DE LA PERSONA), AP4_11_10( PERSONA EN SITUACION DE DESPLAZAMIENTO 
 #FORZADO O NO )
 #   AP4_1 (tiempo en la vivienda),
 #   AP4_4_A (seguro(a) se siente al caminar solo(a) por la noche en los alrededores de su vivienda) 
-# Otra variable de percepcion de seguridad 
+#   Otra variable de percepcion de seguridad 
 # AP4_3_1 : Sentirse seguro en la vivienda de residencia 
-
 
 ######################
 
-#5. Cambiaro los tipos de las variables 
+### Cambio de los tipos de las variables 
 
 str(base)
 base$SEXO <- as.factor(base$SEXO)
@@ -48,14 +44,14 @@ base$AP4_1 <- as.factor(base$AP4_1)
 base$AP4_3_1 <- as.factor(base$AP4_3_1)
 
 
-# Analisis de casos faltantes 
+### Analisis de casos faltantes 
 VIM::aggr(base, col = c("darkblue", "gray"),
           numbers = TRUE, sortVars = TRUE,
           labels = names(base), cex.axis = .7,
           gap = 3, ylab = c("casos faltantes",
                             "estructura"))
 
-# Renombrar las variables 
+### Renombrar las variables 
 # Dado que esta variable es nuestra variable de interes, 
 #Se ha destacado las personas que no respondieron 
 base <- base %>% 
@@ -101,10 +97,9 @@ baseDesp <- base_ %>%
 baseNDesp <- base_ %>% 
   filter(AP4_11_10 == 2)  ### DE COMPARACION 
 
-# Perfil de las personas desplazadas 
+### Perfil de las personas desplazadas 
 
 par(mfrow = c(1, 2))
-
 g1 <- baseDesp %>%  count(SEXO) %>% 
   mutate(prop = n/sum(n)) %>%
   ggplot(aes(x=SEXO, y = prop, fill = SEXO))+
@@ -117,8 +112,7 @@ g1 <- baseDesp %>%  count(SEXO) %>%
        y= "Porcentaje",caption = "Fuente : Elaboración propia con los datos de la ENVIPE(2022)",
        title ="Personas desplazadas por violencia")+
   scale_fill_manual(values = c("#53868B", "#2F4F4F")) 
-         
-
+  
 g2 <- baseNDesp %>%  count(SEXO) %>% 
   mutate(prop = n/sum(n)) %>%
   ggplot(aes(x=SEXO, y = prop, fill = SEXO))+
@@ -131,15 +125,11 @@ g2 <- baseNDesp %>%  count(SEXO) %>%
        y= "Porcentaje",caption = "Fuente : Elaboración propia con los datos de la ENVIPE(2022)",
        title ="Población de comparación")+
   scale_fill_manual(values = c("#53868B", "#2F4F4F")) 
-
 g1
 g2
-
 g1 + g2
 
-
 par(mfrow = c(1, 2))
-
 g3 <- ggplot(baseDesp, aes(x = EDAD)) +
   geom_histogram(aes(color = SEXO, fill = SEXO), 
                  position = "identity", bins = 30, alpha = 0.4) +
@@ -148,8 +138,6 @@ g3 <- ggplot(baseDesp, aes(x = EDAD)) +
   scale_color_manual(values = c("#53868B", "#2F4F4F")) +
   scale_fill_manual(values = c("#53868B", "#2F4F4F")) 
 
-g3
-
 g4 <- ggplot(baseNDesp, aes(x = EDAD)) +
   geom_histogram(aes(color = SEXO, fill = SEXO), 
                  position = "identity", bins = 30, alpha = 0.4) +
@@ -157,18 +145,15 @@ g4 <- ggplot(baseNDesp, aes(x = EDAD)) +
        title ="Población de comparación") +
   scale_color_manual(values = c("#53868B", "#2F4F4F")) +
   scale_fill_manual(values = c("#53868B", "#2F4F4F")) 
-
+g3
 g4
-
 g3+g4
-
 
 g5 <- ggplot(base_ , aes(x = DespForc , y = EDAD, fill = DespForc)) + geom_boxplot() + theme_bw() + 
   labs(x= "En situacion de desplazamiento forzado",
        y= "Edad",caption = "Fuente : Elaboración propia con los datos de la ENVIPE(2022)",
        title ="Figura 2 :Distribución de edad segun que las personas sean desplazadas por violencia o no")+
 scale_fill_manual(values = c("#53868B", "#2F4F4F"))
-
 g5
 
 # Distribucoion del tiempo en la vivienda actual segun que la persona sea desplazad o no 
@@ -191,8 +176,6 @@ g6 <- baseDesp %>%  count(SentirSeguro) %>%
        title ="Personas desplazadas")+
   scale_fill_manual(values = c("#53868B", "#E7B800")) 
 
-g6
-
 g7 <- baseNDesp %>%  count(SentirSeguro) %>% 
   mutate(prop = n/sum(n)) %>%
   ggplot(aes(x=SentirSeguro, y = prop, fill = "2"))+
@@ -205,12 +188,9 @@ g7 <- baseNDesp %>%  count(SentirSeguro) %>%
        y= "Porcentaje",caption = "Fuente : Elaboración propia con los datos de la ENVIPE(2022)",
        title ="Población de comparación")+
   scale_fill_manual(values = c("#53868B", "#E7B800")) 
-
+g6
 g7
-
 g6+ g7 
-
-# 
 
 g8 <- baseNDesp %>%  count(AP4_3_1) %>% 
   mutate(prop = n/sum(n)) %>%
@@ -223,9 +203,7 @@ g8 <- baseNDesp %>%  count(AP4_3_1) %>%
   labs(x= "Sentirse seguro en el lugar de residencia",
        y= "Porcentaje",caption = "Fuente : Elaboración propia con los datos de la ENVIPE(2022)",
        title ="Población de comparacion")+
-  scale_fill_manual(values = c("#53868B", "#E7B800")) 
-
-g8 
+  scale_fill_manual(values = c("#53868B", "#E7B800"))  
 
 g9 <- baseDesp %>%  count(AP4_3_1) %>% 
   mutate(prop = n/sum(n)) %>%
@@ -239,9 +217,8 @@ g9 <- baseDesp %>%  count(AP4_3_1) %>%
        y= "Porcentaje",caption = "Fuente : Elaboración propia con los datos de la ENVIPE(2022)",
        title ="Personas desplazadas")+
   scale_fill_manual(values = c("#53868B", "#E7B800")) 
-
+g8
 g9
-
 g8+g9
 
 # Diferencia de medias entre la variable numérica y alguna variable dicotómica. 
@@ -251,11 +228,8 @@ baseNdf <- base %>%
   filter(AP4_11_10 == 2)
 
 t2 <- tidy(t.test(x = baseDesp$EDAD, y=  baseNDesp$EDAD))
-
 t2
-
 # Estimacion del numero de personas desplazadas 
-
 #Ahora declaramos el diseño muestral
 
 mydesign <- base_ %>%
@@ -263,7 +237,6 @@ mydesign <- base_ %>%
                    strata=ESTRATO,
                    weights=FAC_ELE,
                    nest=T)
-
 mydesign %>%
   group_by(DespForc) %>%
   summarise(Media = survey_mean(EDAD))
