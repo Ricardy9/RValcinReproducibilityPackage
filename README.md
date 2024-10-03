@@ -9,7 +9,7 @@
 
 ## Overview  
 
-The code in this replication packages constructs the analysis files and tables and figures for this analysis using R.  One main file runs all of the code 
+The code in this replication packages constructs the analysis files and tables and figures for this analysis using R. 
 
 ## Directory Structure
 
