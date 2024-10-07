@@ -1,6 +1,7 @@
 
 
 ###################   DATA PROCESSING ######################
+# This part consists of make the data analysis 
 
 ## PAQUETES USADOS 
 library(dplyr)
